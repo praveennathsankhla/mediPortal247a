@@ -1,0 +1,105 @@
+"use client";
+
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+
+
+export default function TermsConditions() {
+  return (
+    <div className="legal-page">
+      <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
+      <div className="container py-12">
+        <div className="legal-content">
+          <h1>Terms & Conditions</h1>
+          <p className="last-updated">Last Updated: March 2026</p>
+
+          <section>
+            <h2>1. Acceptance of Terms</h2>
+            <p>
+              By accessing and using mediportal247 (mediportal247.online), you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
+            </p>
+          </section>
+
+          <section>
+            <h2>2. Description of Service</h2>
+            <p>
+              mediportal247 provides users with access to a rich collection of healthcare-related resources, including hospital profiles, medical news, and health tips. You understand and agree that the Service is provided "AS-IS" and that mediportal247 assumes no responsibility for the timeliness, deletion, mis-delivery or failure to store any user communications or personalization settings.
+            </p>
+          </section>
+
+          <section>
+            <h2>3. Medical Disclaimer</h2>
+            <p>
+              All information provided on mediportal247 is for educational and informational purposes only. It is NOT intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+            </p>
+          </section>
+
+          <section>
+            <h2>4. User Conduct</h2>
+            <p>
+              You agree to use the website only for lawful purposes. You are prohibited from posting or transmitting through the website any material which violates or infringes in any way upon the rights of others, which is unlawful, threatening, abusive, defamatory, invasive of privacy or publicity rights, vulgar, obscene, profane or otherwise objectionable.
+            </p>
+          </section>
+
+          <section>
+            <h2>5. Intellectual Property</h2>
+            <p>
+              The content, arrangement, and layout of this site, including but not limited to the text, graphics, and images, are the property of mediportal247 and are protected by copyright and other intellectual property laws.
+            </p>
+          </section>
+
+          <section>
+            <h2>6. Limitation of Liability</h2>
+            <p>
+              In no event shall mediportal247 or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on mediportal247's website.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .legal-page {
+          min-height: 80vh;
+        }
+        .container {
+          padding-top: 3rem;
+          padding-bottom: 3rem;
+        }
+        .legal-content {
+          max-width: 800px;
+          margin: 0 auto;
+          background: white;
+          padding: 2.5rem;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .last-updated {
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          margin-bottom: 2rem;
+        }
+        h1 {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+          color: var(--primary);
+        }
+        h2 {
+          font-size: 1.5rem;
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+          color: var(--foreground);
+          border-bottom: 2px solid var(--accent);
+          padding-bottom: 0.5rem;
+        }
+        p {
+          font-size: 1.05rem;
+          line-height: 1.7;
+          color: #4a5568;
+          margin-bottom: 1rem;
+        }
+        section {
+          margin-bottom: 2rem;
+        }
+      `}</style>
+    </div>
+  );
+}

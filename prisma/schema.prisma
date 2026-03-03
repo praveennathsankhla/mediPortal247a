@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Hospital {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  overview        String   // Long-form 800-1200 words
+  specialties      String   // JSON or comma separated
+  facilities      String
+  departments     String
+  accreditations  String?  // NABH, JCI etc
+  emergencyInfo   String
+  contactInfo     String
+  mapUrl          String?
+  faqs            String   // JSON string
+  author          String
+  publishDate     DateTime @default(now())
+  lastUpdated     DateTime @default(now())
+  imageUrl        String?
+  cityId          String?
+  city            City?    @relation(fields: [cityId], references: [id])
+  specialtyId     String?
+  specialty       Specialty? @relation(fields: [specialtyId], references: [id])
+  
+  // SEO Fields
+  metaTitle       String?
+  metaDescription String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model BlogPost {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  content         String   // Long-form 1000-1500 words
+  faqs            String?  // JSON string
+  references      String?
+  author          String
+  publishDate     DateTime @default(now())
+  lastUpdated     DateTime @default(now())
+  imageUrl        String?
+  categoryId      String?
+  category        BlogCategory? @relation(fields: [categoryId], references: [id])
+  
+  // SEO Fields
+  metaTitle       String?
+  metaDescription String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model City {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  hospitals Hospital[]
+}
+
+model Specialty {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  hospitals Hospital[]
+}
+
+model BlogCategory {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  posts     BlogPost[]
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed
+  createdAt DateTime @default(now())
+}
