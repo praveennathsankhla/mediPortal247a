@@ -6,9 +6,10 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
 
-export default async function BlogCategoryPage({ params }: { params: { category: string } }) {
+export default async function BlogCategoryPage({ params }: { params: Promise<{ category: string }> }) {
+  const { category } = await params;
   const cat = await prisma.blogCategory.findUnique({
-    where: { slug: params.category },
+    where: { slug: category },
     include: {
       posts: {
         orderBy: { publishDate: 'desc' },

@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { use } from 'react';
 import BlogForm from "@/components/admin/BlogForm";
 
-export default function EditBlogPostPage({ params }: { params: { id: string } }) {
+export default function EditBlogPostPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     // Mocked blog post data
     const post = {
-        id: params.id,
+        id: id,
         title: 'Top 10 Health Tips',
         slug: 'top-10-health-tips',
         content: 'Long form content here...',

@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { use } from 'react';
 import HospitalForm from "@/components/admin/HospitalForm";
 
-export default function EditHospitalPage({ params }: { params: { id: string } }) {
+export default function EditHospitalPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     // Mocked hospital data
     const hospital = {
-        id: params.id,
+        id: id,
         name: 'Apollo Hospital Delhi',
         slug: 'apollo-hospital-delhi',
         overview: 'One of the leading healthcare providers in India.',

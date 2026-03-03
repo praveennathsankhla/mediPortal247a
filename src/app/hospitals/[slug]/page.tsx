@@ -6,9 +6,10 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
 
-export default async function HospitalDetailPage({ params }: { params: { slug: string } }) {
+export default async function HospitalDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const hospital = await prisma.hospital.findUnique({
-        where: { slug: params.slug },
+        where: { slug },
         include: {
             city: true,
             specialty: true,
