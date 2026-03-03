@@ -27,7 +27,7 @@ export default async function BlogIndexPage() {
             </section>
 
             <div className="container py-16">
-                {categories.map((cat) => (
+                {categories.map((cat: any) => (
                     <section key={cat.id} className="category-section">
                         <div className="section-header">
                             <h2>{cat.name}</h2>
@@ -35,7 +35,7 @@ export default async function BlogIndexPage() {
                         </div>
 
                         <div className="blog-grid">
-                            {cat.posts.map((post) => (
+                            {cat.posts.map((post: any) => (
                                 <article key={post.id} className="blog-card">
                                     <div className="card-body">
                                         <span className="post-date">{new Date(post.publishDate).toLocaleDateString()}</span>

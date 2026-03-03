@@ -1,10 +1,15 @@
-"use client";
-
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
+
+export async function generateStaticParams() {
+  const posts = await prisma.blogPost.findMany();
+  return posts.map((post: any) => ({
+    slug: post.slug,
+  }));
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -84,108 +89,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </aside>
         </div>
       </div>
-
-      <style jsx>{`
-        .post-header {
-          max-width: 800px;
-          margin-bottom: 3rem;
-        }
-        .post-category {
-          color: var(--secondary);
-          text-transform: uppercase;
-          font-weight: 800;
-          font-size: 0.85rem;
-          letter-spacing: 1px;
-          display: block;
-          margin-bottom: 1rem;
-        }
-        .post-header h1 {
-          font-size: 3rem;
-          line-height: 1.2;
-          margin-bottom: 1.5rem;
-        }
-        .post-meta {
-          color: var(--text-muted);
-          font-size: 1rem;
-        }
-        .post-featured-image {
-          margin-bottom: 3rem;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: var(--shadow);
-        }
-        .post-featured-image img {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-        .post-content-layout {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 4rem;
-        }
-        .content-body {
-          font-size: 1.15rem;
-          line-height: 1.8;
-          color: #2d3748;
-        }
-        .post-faqs {
-          margin-top: 4rem;
-          padding-top: 3rem;
-          border-top: 1px solid var(--border-color);
-        }
-        .faq-item {
-          margin-bottom: 2rem;
-        }
-        .faq-item h3 {
-          font-size: 1.25rem;
-          margin-bottom: 0.75rem;
-          color: var(--primary);
-        }
-        .post-sidebar {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        .sidebar-card {
-          padding: 1.5rem;
-          border-radius: 8px;
-          border: 1px solid var(--border-color);
-        }
-        .ad-sidebar {
-          background: #f8fafc;
-          height: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #a0aec0;
-          font-size: 0.85rem;
-          text-align: center;
-          border: 1px dashed #cbd5e0;
-        }
-        .medical-notice {
-          background: #fff5f5;
-          border-color: #feb2b2;
-        }
-        .medical-notice h4 {
-          color: #c53030;
-          margin-bottom: 0.75rem;
-        }
-        .medical-notice p {
-          font-size: 0.9rem;
-          color: #9b2c2c;
-          margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 900px) {
-          .post-content-layout {
-            grid-template-columns: 1fr;
-          }
-          .post-header h1 {
-            font-size: 2.25rem;
-          }
-        }
-      `}</style>
     </article>
   );
 }

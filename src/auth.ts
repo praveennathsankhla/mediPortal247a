@@ -28,11 +28,12 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                     const { email, password } = parsedCredentials.data;
 
                     // Mocked credentials
-                    if (email === "pnath6745@gmail.com" && password === "kalu@kalu") {
+                    // Static credentials
+                    if (email === "admin@mediportal247.online" && password === "admin123") {
                         return {
                             id: "1",
                             name: "Admin User",
-                            email: "pnath6745@gmail.com",
+                            email: "admin@mediportal247.online",
                         };
                     }
                 }

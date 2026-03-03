@@ -26,7 +26,7 @@ export default async function CitiesIndexPage() {
         </header>
 
         <div className="cities-grid">
-          {cities.map((city) => (
+          {cities.map((city: any) => (
             <Link key={city.id} href={`/cities/${city.slug}`} className="city-card">
               <div className="city-info">
                 <h3>{city.name}</h3>

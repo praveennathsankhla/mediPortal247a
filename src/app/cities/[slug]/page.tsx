@@ -1,10 +1,15 @@
-"use client";
-
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
+
+export async function generateStaticParams() {
+  const cities = await prisma.city.findMany();
+  return cities.map((city: any) => ({
+    slug: city.slug,
+  }));
+}
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -38,7 +43,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
         <div className="hospitals-list">
           {city.hospitals.length > 0 ? (
-            city.hospitals.map((h) => (
+            city.hospitals.map((h: any) => (
               <div key={h.id} className="hospital-item">
                 <div className="hospital-info">
                   <div className="tags">
@@ -69,95 +74,6 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           Google AdSense Placeholder - City Hospital Listings
         </div>
       </div>
-
-      <style jsx>{`
-        .city-header {
-          margin-bottom: 3rem;
-          border-bottom: 2px solid var(--accent);
-          padding-bottom: 2rem;
-        }
-        .city-header h1 {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
-        }
-        .city-header p {
-          font-size: 1.1rem;
-          color: var(--text-muted);
-          max-width: 800px;
-        }
-        .hospitals-list {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        .hospital-item {
-          background: white;
-          border-radius: 12px;
-          padding: 2rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-          border: 1px solid var(--border-color);
-          transition: transform 0.2s;
-        }
-        .hospital-item:hover {
-          transform: translateY(-2px);
-        }
-        .tags {
-          display: flex;
-          gap: 0.75rem;
-          margin-bottom: 1rem;
-        }
-        .tag-specialty {
-          background: var(--accent);
-          color: var(--primary);
-          padding: 0.25rem 0.75rem;
-          border-radius: 50px;
-          font-size: 0.8rem;
-          font-weight: 700;
-        }
-        .tag-accreditation {
-          background: #f0fff4;
-          color: #2f855a;
-          padding: 0.25rem 0.75rem;
-          border-radius: 50px;
-          font-size: 0.8rem;
-          font-weight: 700;
-        }
-        .hospital-item h3 {
-          font-size: 1.5rem;
-          margin-bottom: 1rem;
-        }
-        .hospital-excerpt {
-          color: #4a5568;
-          margin-bottom: 1.5rem;
-          line-height: 1.6;
-        }
-        .hospital-meta {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 1.5rem;
-          font-size: 0.9rem;
-          color: var(--text-muted);
-        }
-        .no-results {
-          text-align: center;
-          padding: 4rem 2rem;
-          background: white;
-          border-radius: 12px;
-        }
-        .btn-outline {
-          border: 1px solid var(--primary);
-          color: var(--primary);
-          margin-top: 1rem;
-        }
-        .ad-space {
-          margin-top: 4rem;
-          text-align: center;
-          padding: 2rem;
-          background: #f8fafc;
-          border: 1px dashed #cbd5e0;
-          color: #718096;
-        }
-      `}</style>
     </div>
   );
 }

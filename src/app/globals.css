@@ -493,3 +493,219 @@ a:hover {
     text-align: center;
   }
 }
+/* --- Dynamic Page Styles (Migrated from styled-jsx) --- */
+
+/* Blog Category Page */
+.category-header {
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2rem;
+}
+.category-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Blog Post Page */
+.post-header {
+  max-width: 800px;
+  margin-bottom: 3rem;
+}
+.post-category {
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 1rem;
+}
+.post-header h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.post-meta {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+.post-featured-image {
+  margin-bottom: 3rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.post-featured-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.post-content-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+}
+.content-body {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #2d3748;
+}
+.post-faqs {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border-color);
+}
+.faq-item {
+  margin-bottom: 2rem;
+}
+.faq-item h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.blog-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-bottom: 4px solid var(--secondary);
+  border-radius: 8px;
+  padding: 2rem;
+  transition: transform 0.2s;
+}
+.blog-card:hover {
+  transform: translateY(-5px);
+}
+.meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.blog-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+.excerpt {
+  font-size: 0.95rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.read-more {
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/* City Detail Page */
+.city-header {
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2rem;
+}
+.city-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.city-header p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 800px;
+}
+.hospitals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.hospital-item {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s;
+}
+.hospital-item:hover {
+  transform: translateY(-2px);
+}
+.tags {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.tag-specialty {
+  background: var(--accent);
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.tag-accreditation {
+  background: #f0fff4;
+  color: #2f855a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.hospital-item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.hospital-excerpt {
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.hospital-meta {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Hospital Detail Page */
+.hospital-header {
+  margin-bottom: 3rem;
+}
+.header-tags {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.city-tag { background: var(--secondary); color: white; padding: 0.2rem 0.8rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
+.specialty-tag { background: var(--accent); color: var(--primary); padding: 0.2rem 0.8rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
+.hospital-header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+.accreditations { color: var(--success); font-weight: 600; font-size: 1.1rem; }
+
+.detail-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; }
+.info-block { margin-bottom: 4rem; }
+.info-block h2 { font-size: 1.75rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.content { line-height: 1.8; font-size: 1.1rem; color: #4a5568; }
+
+.facilities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.facility-item { background: #f8fafc; padding: 0.75rem; border-radius: 6px; font-weight: 500; }
+
+.contact-card { background: white; border: 1px solid var(--border-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); position: sticky; top: 120px; }
+.contact-item { margin-bottom: 1.5rem; }
+.emergency-text { color: var(--error); font-weight: 700; font-size: 1.2rem; }
+
+.ad-card { background: #f8fafc; border: 1px dashed #cbd5e0; height: 250px; display: flex; align-items: center; justify-content: center; margin: 2rem 0; color: #a0aec0; }
+.warning-card { background: #fffaf0; border: 1px solid #feebc8; padding: 1rem; border-radius: 8px; font-size: 0.85rem; color: #7b341e; }
+
+@media (max-width: 900px) {
+  .post-content-layout, .detail-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .contact-card { position: static !important; }
+  .post-header h1, .hospital-header h1 {
+    font-size: 2.25rem !important;
+  }
+}

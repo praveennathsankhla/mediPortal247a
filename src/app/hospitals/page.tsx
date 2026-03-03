@@ -61,7 +61,7 @@ export default async function HospitalsPage({
                             <h3>Filter by City</h3>
                             <ul>
                                 <li><Link href="/hospitals" className={!city ? 'active' : ''}>All Cities</Link></li>
-                                {cities.map(c => (
+                                {cities.map((c: any) => (
                                     <li key={c.id}>
                                         <Link href={`/hospitals?city=${c.slug}`} className={city === c.slug ? 'active' : ''}>{c.name}</Link>
                                     </li>
@@ -73,7 +73,7 @@ export default async function HospitalsPage({
                             <h3>Filter by Specialty</h3>
                             <ul>
                                 <li><Link href="/hospitals" className={!specialty ? 'active' : ''}>All Specialties</Link></li>
-                                {specialties.map(s => (
+                                {specialties.map((s: any) => (
                                     <li key={s.id}>
                                         <Link href={`/hospitals?specialty=${s.slug}`} className={specialty === s.slug ? 'active' : ''}>{s.name}</Link>
                                     </li>
@@ -89,7 +89,7 @@ export default async function HospitalsPage({
 
                         <div className="hospitals-list">
                             {hospitals.length > 0 ? (
-                                hospitals.map(h => (
+                                hospitals.map((h: any) => (
                                     <div key={h.id} className="hospital-item">
                                         <div className="hospital-item-image">
                                             {h.imageUrl ? <img src={h.imageUrl} alt={h.name} /> : <div className="placeholder">MediCare</div>}
