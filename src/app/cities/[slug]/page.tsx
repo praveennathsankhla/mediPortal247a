@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
