@@ -1,25 +1,20 @@
-"use client";
-
-import React, { use } from 'react';
+import React from 'react';
 import BlogForm from "@/components/admin/BlogForm";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
-export default function EditBlogPostPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
-    // Mocked blog post data
-    const post = {
-        id: id,
-        title: 'Top 10 Health Tips',
-        slug: 'top-10-health-tips',
-        content: 'Long form content here...',
-        faqs: '[]',
-        author: 'Dr. Sharma',
-        publishDate: new Date(),
-        categoryId: '1',
-    };
+export default async function EditBlogPostPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
 
-    const categories = [
-        { id: '1', name: 'Wellness', slug: 'wellness' },
-    ];
+    const post = await prisma.blogPost.findUnique({
+        where: { id }
+    });
+
+    if (!post) notFound();
+
+    const categories = await prisma.blogCategory.findMany({
+        orderBy: { name: 'asc' }
+    });
 
     return (
         <div className="admin-page">
@@ -30,11 +25,6 @@ export default function EditBlogPostPage({ params }: { params: Promise<{ id: str
 
             <BlogForm initialData={post} categories={categories} />
 
-            <style jsx>{`
-        .page-header {
-          margin-bottom: 2rem;
-        }
-      `}</style>
         </div>
     );
 }

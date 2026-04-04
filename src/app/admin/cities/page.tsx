@@ -1,13 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import React from 'react';
+import { prisma } from "@/lib/prisma";
+import DeleteButton from "@/components/admin/DeleteButton";
 
-export default function AdminCitiesPage() {
-    const cities = [
-        { id: '1', name: 'Delhi', slug: 'delhi', _count: { hospitals: 15 } },
-        { id: '2', name: 'Mumbai', slug: 'mumbai', _count: { hospitals: 12 } },
-    ];
+export default async function AdminCitiesPage() {
+    const cities = await prisma.city.findMany({
+        include: { _count: { select: { hospitals: true } } },
+        orderBy: { name: 'asc' }
+    });
 
     return (
         <div className="admin-cities">
@@ -39,6 +39,7 @@ export default function AdminCitiesPage() {
                                 <td>{c._count.hospitals}</td>
                                 <td className="actions">
                                     <Link href={`/admin/cities/${c.id}/edit`} className="edit-link">Edit</Link>
+                                    <DeleteButton id={c.id} endpoint="/api/admin/cities" itemName={c.name} />
                                 </td>
                             </tr>
                         ))}
@@ -46,38 +47,6 @@ export default function AdminCitiesPage() {
                 </table>
             </div>
 
-            <style jsx>{`
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 2rem;
-        }
-        .data-table-container {
-          background: white;
-          border-radius: 8px;
-          box-shadow: var(--shadow);
-          overflow: hidden;
-        }
-        .data-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .data-table th, .data-table td {
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid var(--border-color);
-          text-align: left;
-        }
-        .data-table th {
-          background: #f8fafc;
-          font-weight: 600;
-          color: #4a5568;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-        }
-        .font-bold { font-weight: 600; color: var(--primary); }
-        .edit-link { color: var(--primary); font-weight: 500; text-decoration: none; }
-      `}</style>
         </div>
     );
 }

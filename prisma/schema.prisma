@@ -24,6 +24,7 @@ model Hospital {
   publishDate     DateTime @default(now())
   lastUpdated     DateTime @default(now())
   imageUrl        String?
+  imageCredit     String?
   cityId          String?
   city            City?    @relation(fields: [cityId], references: [id])
   specialtyId     String?
@@ -48,6 +49,7 @@ model BlogPost {
   publishDate     DateTime @default(now())
   lastUpdated     DateTime @default(now())
   imageUrl        String?
+  imageCredit     String?
   categoryId      String?
   category        BlogCategory? @relation(fields: [categoryId], references: [id])
   

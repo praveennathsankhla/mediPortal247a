@@ -1,49 +1,40 @@
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 export default async function HospitalsPage({
     searchParams,
 }: {
-    searchParams: { city?: string; specialty?: string };
+    searchParams: Promise<{ city?: string; specialty?: string }>;
 }) {
-    // Mocked cities and specialties
-    const cities = [
-        { id: 'c1', name: 'Delhi', slug: 'delhi' },
-        { id: 'c2', name: 'Mumbai', slug: 'mumbai' },
-        { id: 'c3', name: 'Bangalore', slug: 'bangalore' }
-    ];
+    const { city, specialty } = await searchParams;
 
-    const specialties = [
-        { id: 's1', name: 'Cardiology', slug: 'cardiology' },
-        { id: 's2', name: 'Oncology', slug: 'oncology' },
-        { id: 's3', name: 'Neurology', slug: 'neurology' }
-    ];
+    // Fetch cities and specialties for filters
+    const cities = await prisma.city.findMany({
+        orderBy: { name: 'asc' }
+    });
 
-    const { city, specialty } = searchParams;
+    const specialties = await prisma.specialty.findMany({
+        orderBy: { name: 'asc' }
+    });
 
-    // Mocked hospitals list
-    const hospitals = [
-        {
-            id: '1',
-            name: 'Apollo Hospital Delhi',
-            slug: 'apollo-hospital-delhi',
-            overview: 'One of the leading healthcare providers in India with world-class facilities.',
-            imageUrl: null,
-            accreditations: 'NABH, JCI',
-            city: { name: 'Delhi', slug: 'delhi' },
-            specialty: { name: 'Multi-Specialty', slug: 'multi-specialty' }
+    // Fetch hospitals with filters
+    const hospitals = await prisma.hospital.findMany({
+        where: {
+            AND: [
+                city ? { city: { slug: city } } : {},
+                specialty ? { specialty: { slug: specialty } } : {},
+            ]
         },
-        {
-            id: '2',
-            name: 'Fortis Memorial Research Institute',
-            slug: 'fortis-memorial-gurgaon',
-            overview: 'A multi-specialty, quaternary care hospital with high-end technology.',
-            imageUrl: null,
-            accreditations: 'NABH',
-            city: { name: 'Gurgaon', slug: 'gurgaon' },
-            specialty: { name: 'Cardiology', slug: 'cardiology' }
+        include: {
+            city: true,
+            specialty: true,
+        },
+        orderBy: {
+            publishDate: 'desc'
         }
-    ];
+    });
 
     return (
         <div className="hospitals-portal">
@@ -61,7 +52,7 @@ export default async function HospitalsPage({
                             <h3>Filter by City</h3>
                             <ul>
                                 <li><Link href="/hospitals" className={!city ? 'active' : ''}>All Cities</Link></li>
-                                {cities.map((c: any) => (
+                                {cities.map((c) => (
                                     <li key={c.id}>
                                         <Link href={`/hospitals?city=${c.slug}`} className={city === c.slug ? 'active' : ''}>{c.name}</Link>
                                     </li>
@@ -73,7 +64,7 @@ export default async function HospitalsPage({
                             <h3>Filter by Specialty</h3>
                             <ul>
                                 <li><Link href="/hospitals" className={!specialty ? 'active' : ''}>All Specialties</Link></li>
-                                {specialties.map((s: any) => (
+                                {specialties.map((s) => (
                                     <li key={s.id}>
                                         <Link href={`/hospitals?specialty=${s.slug}`} className={specialty === s.slug ? 'active' : ''}>{s.name}</Link>
                                     </li>
@@ -89,10 +80,10 @@ export default async function HospitalsPage({
 
                         <div className="hospitals-list">
                             {hospitals.length > 0 ? (
-                                hospitals.map((h: any) => (
+                                hospitals.map((h) => (
                                     <div key={h.id} className="hospital-item">
                                         <div className="hospital-item-image">
-                                            {h.imageUrl ? <img src={h.imageUrl} alt={h.name} /> : <div className="placeholder">MediCare</div>}
+                                            {h.imageUrl ? <Image src={h.imageUrl} alt={h.name} width={200} height={150} className="object-cover" /> : <div className="placeholder">MediCare</div>}
                                         </div>
                                         <div className="hospital-item-content">
                                             <div className="item-tags">

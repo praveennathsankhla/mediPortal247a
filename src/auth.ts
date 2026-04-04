@@ -26,16 +26,11 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
+                    const admin = await getAdmin(email);
+                    if (!admin) return null;
 
-                    // Mocked credentials
-                    // Static credentials
-                    if (email === "admin@mediportal247.online" && password === "admin123") {
-                        return {
-                            id: "1",
-                            name: "Admin User",
-                            email: "admin@mediportal247.online",
-                        };
-                    }
+                    const passwordsMatch = await bcrypt.compare(password, admin.password);
+                    if (passwordsMatch) return admin;
                 }
 
                 console.log("Invalid credentials");

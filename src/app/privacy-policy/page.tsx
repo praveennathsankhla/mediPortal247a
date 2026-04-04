@@ -1,5 +1,3 @@
-"use client";
-
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 
@@ -56,7 +54,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2>5. Google AdSense and Cookies</h2>
             <p>
-              We use Google AdSense to serve ads on our site. Google, as a third-party vendor, uses cookies to serve ads on your site. Google's use of the DART cookie enables it to serve ads to your users based on their visit to your sites and other sites on the Internet. Users may opt out of the use of the DART cookie by visiting the Google Ad and Content Network privacy policy.
+              We use Google AdSense to serve ads on our site. Google, as a third-party vendor, uses cookies to serve ads on your site. Google&apos;s use of the DART cookie enables it to serve ads to your users based on their visit to your sites and other sites on the Internet. Users may opt out of the use of the DART cookie by visiting the Google Ad and Content Network privacy policy.
             </p>
           </section>
 
@@ -69,54 +67,6 @@ export default function PrivacyPolicy() {
         </div>
       </div>
 
-      <style jsx>{`
-        .legal-page {
-          min-height: 80vh;
-        }
-        .container {
-          padding-top: 3rem;
-          padding-bottom: 3rem;
-        }
-        .legal-content {
-          max-width: 800px;
-          margin: 0 auto;
-          background: white;
-          padding: 2.5rem;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .last-updated {
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          margin-bottom: 2rem;
-        }
-        h1 {
-          font-size: 2.5rem;
-          margin-bottom: 0.5rem;
-          color: var(--primary);
-        }
-        h2 {
-          font-size: 1.5rem;
-          margin-top: 2rem;
-          margin-bottom: 1rem;
-          color: var(--foreground);
-          border-bottom: 2px solid var(--accent);
-          padding-bottom: 0.5rem;
-        }
-        p, li {
-          font-size: 1.05rem;
-          line-height: 1.7;
-          color: #4a5568;
-          margin-bottom: 1rem;
-        }
-        ul {
-          margin-left: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-        section {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </div>
   );
 }

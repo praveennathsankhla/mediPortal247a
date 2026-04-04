@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const cities = await prisma.city.findMany();
-  return cities.map((city: any) => ({
+  return cities.map((city) => ({
     slug: city.slug,
   }));
 }
@@ -43,7 +43,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
         <div className="hospitals-list">
           {city.hospitals.length > 0 ? (
-            city.hospitals.map((h: any) => (
+            city.hospitals.map((h) => (
               <div key={h.id} className="hospital-item">
                 <div className="hospital-info">
                   <div className="tags">

@@ -1,17 +1,14 @@
-"use client";
-
 import React from 'react';
 import HospitalForm from "@/components/admin/HospitalForm";
+import { prisma } from "@/lib/prisma";
 
-export default function NewHospitalPage() {
-  const cities = [
-    { id: '1', name: 'Delhi', slug: 'delhi' },
-    { id: '2', name: 'Mumbai', slug: 'mumbai' },
-  ];
-  const specialties = [
-    { id: '1', name: 'Cardiology', slug: 'cardiology' },
-    { id: '2', name: 'Neurology', slug: 'neurology' },
-  ];
+export default async function NewHospitalPage() {
+  const cities = await prisma.city.findMany({
+    orderBy: { name: 'asc' }
+  });
+  const specialties = await prisma.specialty.findMany({
+    orderBy: { name: 'asc' }
+  });
 
   return (
     <div className="admin-page">
@@ -22,11 +19,6 @@ export default function NewHospitalPage() {
 
       <HospitalForm cities={cities} specialties={specialties} />
 
-      <style jsx>{`
-        .page-header {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </div>
   );
 }

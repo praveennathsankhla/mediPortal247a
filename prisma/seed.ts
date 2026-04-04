@@ -32,7 +32,7 @@ async function main() {
         { name: "Hyderabad", slug: "hyderabad" }
     ];
 
-    const cityMap: any = {};
+    const cityMap: Record<string, string> = {};
     for (const c of cities) {
         const city = await prisma.city.upsert({
             where: { slug: c.slug },
@@ -44,7 +44,7 @@ async function main() {
 
     // 2. Seed Specialties
     const specialties = ["Cardiology", "Neurology", "Oncology", "Orthopedics", "Gastroenterology", "Multi-Specialty"];
-    const specialtyMap: any = {};
+    const specialtyMap: Record<string, string> = {};
     for (const name of specialties) {
         const spec = await prisma.specialty.upsert({
             where: { slug: name.toLowerCase().replace(/\s+/g, "-") },
@@ -56,7 +56,7 @@ async function main() {
 
     // 3. Seed Blog Categories
     const categories = ["Health Tips", "Disease Awareness", "Medical News", "Wellness"];
-    const catMap: any = {};
+    const catMap: Record<string, string> = {};
     for (const name of categories) {
         const cat = await prisma.blogCategory.upsert({
             where: { slug: name.toLowerCase().replace(/\s+/g, "-") },

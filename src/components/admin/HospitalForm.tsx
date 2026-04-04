@@ -4,9 +4,29 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface HospitalFormProps {
-    initialData?: any;
-    cities: any[];
-    specialties: any[];
+    initialData?: {
+        id: string;
+        name: string;
+        slug: string;
+        overview: string;
+        specialties: string;
+        facilities: string;
+        departments: string;
+        accreditations?: string | null;
+        emergencyInfo: string;
+        contactInfo: string;
+        mapUrl?: string | null;
+        imageUrl?: string | null;
+        imageCredit?: string | null;
+        cityId?: string | null;
+        specialtyId?: string | null;
+        metaTitle?: string | null;
+        metaDescription?: string | null;
+        publishDate: Date | string;
+        lastUpdated: Date | string;
+    };
+    cities: { id: string; name: string }[];
+    specialties: { id: string; name: string }[];
 }
 
 export default function HospitalForm({ initialData, cities, specialties }: HospitalFormProps) {
@@ -33,10 +53,39 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
 
             router.push("/admin/hospitals");
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred");
+            }
         } finally {
             setIsPending(false);
+        }
+    };
+
+    const generateSEO = () => {
+        const name = (document.getElementsByName("name")[0] as HTMLInputElement)?.value;
+        const overview = (document.getElementsByName("overview")[0] as HTMLTextAreaElement)?.value;
+
+        if (!name) return;
+
+        // Auto-slug
+        const slugInput = document.getElementsByName("slug")[0] as HTMLInputElement;
+        if (slugInput && !slugInput.value) {
+            slugInput.value = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        // Auto-meta title
+        const metaTitleInput = document.getElementsByName("metaTitle")[0] as HTMLInputElement;
+        if (metaTitleInput && !metaTitleInput.value) {
+            metaTitleInput.value = `${name} - Best Hospitals in India | mediportal247`;
+        }
+
+        // Auto-meta description
+        const metaDescInput = document.getElementsByName("metaDescription")[0] as HTMLTextAreaElement;
+        if (metaDescInput && !metaDescInput.value && overview) {
+            metaDescInput.value = overview.substring(0, 155).replace(/\s+/g, ' ').trim() + "...";
         }
     };
 
@@ -44,7 +93,10 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
         <form onSubmit={handleSubmit} className="hospital-form">
             <div className="form-sections">
                 <section className="form-section">
-                    <h3>Basic Information</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3>Basic Information</h3>
+                        <button type="button" onClick={generateSEO} className="btn-magic">✨ Magic SEO</button>
+                    </div>
                     <div className="form-group">
                         <label>Hospital Name *</label>
                         <input name="name" defaultValue={initialData?.name} required placeholder="e.g. AIIMS Delhi" />
@@ -55,15 +107,21 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
                     </div>
                     <div className="grid-2">
                         <div className="form-group">
-                            <label>City</label>
-                            <select name="cityId" defaultValue={initialData?.cityId}>
-                                <option value="">Select City</option>
-                                {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                            </select>
+                            <label>City *</label>
+                            <input
+                                name="cityName"
+                                list="cities-data"
+                                defaultValue={cities.find(c => c.id === initialData?.cityId)?.name ?? ""}
+                                required
+                                placeholder="Type or select city..."
+                            />
+                            <datalist id="cities-data">
+                                {cities.map(c => <option key={c.id} value={c.name} />)}
+                            </datalist>
                         </div>
                         <div className="form-group">
                             <label>Primary Specialty</label>
-                            <select name="specialtyId" defaultValue={initialData?.specialtyId}>
+                            <select name="specialtyId" defaultValue={initialData?.specialtyId ?? undefined} required>
                                 <option value="">Select Specialty</option>
                                 {specialties.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                             </select>
@@ -71,7 +129,11 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
                     </div>
                     <div className="form-group">
                         <label>Image URL</label>
-                        <input name="imageUrl" defaultValue={initialData?.imageUrl} placeholder="https://example.com/image.jpg" />
+                        <input name="imageUrl" defaultValue={initialData?.imageUrl ?? ""} placeholder="https://example.com/hospital-image.jpg" />
+                    </div>
+                    <div className="form-group">
+                        <label>Image Credit / Source</label>
+                        <input name="imageCredit" defaultValue={initialData?.imageCredit ?? ""} placeholder="e.g. Photo by John Doe or Source: Wikipedia" />
                     </div>
                 </section>
 
@@ -100,7 +162,7 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
                     <div className="grid-2">
                         <div className="form-group">
                             <label>Accreditations (NABH, JCI, etc.)</label>
-                            <input name="accreditations" defaultValue={initialData?.accreditations} />
+                            <input name="accreditations" defaultValue={initialData?.accreditations ?? ""} />
                         </div>
                         <div className="form-group">
                             <label>Contact Details</label>
@@ -113,7 +175,7 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
                     </div>
                     <div className="form-group">
                         <label>Google Maps Embed URL</label>
-                        <input name="mapUrl" defaultValue={initialData?.mapUrl} />
+                        <input name="mapUrl" defaultValue={initialData?.mapUrl ?? ""} />
                     </div>
                 </section>
 
@@ -131,11 +193,11 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
                     </div>
                     <div className="form-group">
                         <label>Meta Title</label>
-                        <input name="metaTitle" defaultValue={initialData?.metaTitle} placeholder="SEO Title" />
+                        <input name="metaTitle" defaultValue={initialData?.metaTitle ?? ""} placeholder="SEO Title" />
                     </div>
                     <div className="form-group">
                         <label>Meta Description</label>
-                        <textarea name="metaDescription" defaultValue={initialData?.metaDescription} rows={2} placeholder="SEO Description" />
+                        <textarea name="metaDescription" defaultValue={initialData?.metaDescription ?? ""} rows={2} placeholder="SEO Description" />
                     </div>
                 </section>
             </div>
@@ -205,6 +267,19 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
           padding: 1rem;
           border-radius: 4px;
           margin-top: 1rem;
+        }
+        .btn-magic {
+          background: #fdf2f8;
+          color: #db2777;
+          border: 1px solid #fbcfe8;
+          padding: 0.4rem 0.8rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .btn-magic:hover {
+          background: #fce7f3;
         }
       `}</style>
         </form>

@@ -1,5 +1,3 @@
-"use client";
-
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 
@@ -22,7 +20,7 @@ export default function TermsConditions() {
           <section>
             <h2>2. Description of Service</h2>
             <p>
-              mediportal247 provides users with access to a rich collection of healthcare-related resources, including hospital profiles, medical news, and health tips. You understand and agree that the Service is provided "AS-IS" and that mediportal247 assumes no responsibility for the timeliness, deletion, mis-delivery or failure to store any user communications or personalization settings.
+              mediportal247 provides users with access to a rich collection of healthcare-related resources, including hospital profiles, medical news, and health tips. You understand and agree that the Service is provided &quot;AS-IS&quot; and that mediportal247 assumes no responsibility for the timeliness, deletion, mis-delivery or failure to store any user communications or personalization settings.
             </p>
           </section>
 
@@ -50,56 +48,12 @@ export default function TermsConditions() {
           <section>
             <h2>6. Limitation of Liability</h2>
             <p>
-              In no event shall mediportal247 or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on mediportal247's website.
+              In no event shall mediportal247 or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on mediportal247&apos;s website.
             </p>
           </section>
         </div>
       </div>
 
-      <style jsx>{`
-        .legal-page {
-          min-height: 80vh;
-        }
-        .container {
-          padding-top: 3rem;
-          padding-bottom: 3rem;
-        }
-        .legal-content {
-          max-width: 800px;
-          margin: 0 auto;
-          background: white;
-          padding: 2.5rem;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .last-updated {
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          margin-bottom: 2rem;
-        }
-        h1 {
-          font-size: 2.5rem;
-          margin-bottom: 0.5rem;
-          color: var(--primary);
-        }
-        h2 {
-          font-size: 1.5rem;
-          margin-top: 2rem;
-          margin-bottom: 1rem;
-          color: var(--foreground);
-          border-bottom: 2px solid var(--accent);
-          padding-bottom: 0.5rem;
-        }
-        p {
-          font-size: 1.05rem;
-          line-height: 1.7;
-          color: #4a5568;
-          margin-bottom: 1rem;
-        }
-        section {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </div>
   );
 }

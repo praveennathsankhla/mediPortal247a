@@ -1,25 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import React from 'react';
+import { prisma } from "@/lib/prisma";
+import DeleteButton from "@/components/admin/DeleteButton";
 
-export default function AdminBlogPage() {
-  const posts = [
-    {
-      id: 'a',
-      title: 'Top 10 Health Tips',
-      category: { name: 'Wellness' },
-      publishDate: new Date(),
-      lastUpdated: new Date(),
-    },
-    {
-      id: 'b',
-      title: 'Understanding Fever',
-      category: { name: 'Health Awareness' },
-      publishDate: new Date(),
-      lastUpdated: new Date(),
-    }
-  ];
+export default async function AdminBlogPage() {
+  const posts = await prisma.blogPost.findMany({
+    include: { category: true },
+    orderBy: { createdAt: 'desc' }
+  });
 
   return (
     <div className="admin-blog">
@@ -54,7 +42,7 @@ export default function AdminBlogPage() {
                   <td>{new Date(p.lastUpdated).toLocaleDateString()}</td>
                   <td className="actions">
                     <Link href={`/admin/blog/${p.id}/edit`} className="edit-link">Edit</Link>
-                    <button className="delete-btn">Delete</button>
+                    <DeleteButton id={p.id} endpoint="/api/admin/blog" itemName={p.title} />
                   </td>
                 </tr>
               ))
@@ -67,57 +55,6 @@ export default function AdminBlogPage() {
         </table>
       </div>
 
-      <style jsx>{`
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 2rem;
-        }
-        .data-table-container {
-          background: white;
-          border-radius: 8px;
-          box-shadow: var(--shadow);
-          overflow: hidden;
-        }
-        .data-table {
-          width: 100%;
-          border-collapse: collapse;
-          text-align: left;
-        }
-        .data-table th, .data-table td {
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid var(--border-color);
-        }
-        .data-table th {
-          background: #f8fafc;
-          font-weight: 600;
-          color: #4a5568;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-        }
-        .font-bold {
-          font-weight: 600;
-          color: var(--primary);
-        }
-        .actions {
-          display: flex;
-          gap: 1rem;
-        }
-        .edit-link {
-          color: var(--primary);
-          font-weight: 500;
-        }
-        .delete-btn {
-          color: var(--error);
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-weight: 500;
-        }
-        .text-center { text-align: center; }
-        .py-8 { padding: 2rem 0; }
-      `}</style>
     </div>
   );
 }

@@ -11,11 +11,21 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     try {
         const data = await req.json();
-        const {
-            title, slug, content, faqs, references, author,
-            imageUrl, categoryId, metaTitle, metaDescription,
+        let {
+            title, slug, content, faqs = "[]", references = "", author = session.user?.email || "Admin",
+            imageUrl = "", imageCredit = "", categoryId, metaTitle = "", metaDescription = "",
             publishDate, lastUpdated
         } = data;
+
+        // Sanitize slug
+        if (slug) {
+            slug = slug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        } else if (title) {
+            slug = title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        const publishDateObj = publishDate ? new Date(publishDate) : new Date();
+        const lastUpdatedObj = lastUpdated ? new Date(lastUpdated) : new Date();
 
         const post = await prisma.blogPost.update({
             where: { id },
@@ -27,18 +37,20 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
                 references,
                 author,
                 imageUrl,
+                imageCredit,
                 categoryId: categoryId || null,
                 metaTitle,
                 metaDescription,
-                publishDate: new Date(publishDate),
-                lastUpdated: new Date(lastUpdated),
+                publishDate: isNaN(publishDateObj.getTime()) ? new Date() : publishDateObj,
+                lastUpdated: isNaN(lastUpdatedObj.getTime()) ? new Date() : lastUpdatedObj,
             },
         });
 
         return NextResponse.json(post);
-    } catch (error: any) {
-        console.error("Blog post update error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        console.error("Hospital update error:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
 
@@ -54,8 +66,9 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
             where: { id },
         });
         return NextResponse.json({ success: true });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Blog post deletion error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }

@@ -12,10 +12,28 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     try {
         const data = await req.json();
         const {
-            name, slug, overview, specialties, facilities, departments,
-            accreditations, emergencyInfo, contactInfo, mapUrl, imageUrl,
-            cityId, specialtyId, metaTitle, metaDescription, publishDate, lastUpdated
+            name, slug, overview, specialties = "", facilities = "", departments = "",
+            accreditations = "", emergencyInfo = "", contactInfo = "", mapUrl = "", imageUrl = "", imageCredit = "",
+            cityName, specialtyId, metaTitle = "", metaDescription = "", publishDate, lastUpdated
         } = data;
+
+        // Resolve cityId from cityName
+        let resolvedCityId = null;
+        if (cityName && typeof cityName === 'string') {
+            const citySlug = cityName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            const city = await prisma.city.upsert({
+                where: { name: cityName },
+                update: {},
+                create: {
+                    name: cityName,
+                    slug: citySlug
+                }
+            });
+            resolvedCityId = city.id;
+        }
+
+        const publishDateObj = publishDate ? new Date(publishDate) : new Date();
+        const lastUpdatedObj = lastUpdated ? new Date(lastUpdated) : new Date();
 
         const hospital = await prisma.hospital.update({
             where: { id },
@@ -31,19 +49,23 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
                 contactInfo,
                 mapUrl,
                 imageUrl,
-                cityId: cityId || null,
+                imageCredit,
+                cityId: resolvedCityId,
                 specialtyId: specialtyId || null,
                 metaTitle,
                 metaDescription,
-                publishDate: new Date(publishDate),
-                lastUpdated: new Date(lastUpdated),
+                publishDate: isNaN(publishDateObj.getTime()) ? new Date() : publishDateObj,
+                lastUpdated: isNaN(lastUpdatedObj.getTime()) ? new Date() : lastUpdatedObj,
             },
         });
 
         return NextResponse.json(hospital);
     } catch (error: any) {
         console.error("Hospital update error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({
+            error: error.message || "Unknown error",
+            stack: error.stack
+        }, { status: 500 });
     }
 }
 
@@ -59,8 +81,9 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
             where: { id },
         });
         return NextResponse.json({ success: true });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Hospital deletion error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }

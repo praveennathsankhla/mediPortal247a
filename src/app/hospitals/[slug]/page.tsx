@@ -1,12 +1,34 @@
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const hospital = await prisma.hospital.findUnique({
+        where: { slug },
+        select: { name: true, metaTitle: true, metaDescription: true }
+    });
+
+    if (!hospital) return { title: 'Hospital Not Found' };
+
+    return {
+        title: hospital.metaTitle || `${hospital.name} - Best Hospitals in India | mediportal247`,
+        description: hospital.metaDescription || `Detailed profile of ${hospital.name}. Explore world-class medical facilities, specialties, and expert healthcare.`,
+        openGraph: {
+            title: hospital.name,
+            description: hospital.metaDescription,
+            type: 'article',
+        }
+    };
+}
+
 export async function generateStaticParams() {
-    const hospitals = await prisma.hospital.findMany();
-    return hospitals.map((h: any) => ({
+    const hospitals = await prisma.hospital.findMany({
+        select: { slug: true }
+    });
+    return hospitals.map((h) => ({
         slug: h.slug,
     }));
 }
@@ -42,6 +64,10 @@ export default async function HospitalDetailPage({ params }: { params: Promise<{
                         <span className="specialty-tag">{hospital.specialty?.name}</span>
                     </div>
                     <h1>{hospital.name}</h1>
+                    <div className="hospital-image">
+                        <Image src={hospital.imageUrl} alt={hospital.name} width={800} height={450} priority />
+                        {hospital.imageCredit && <div className="image-credit">{hospital.imageCredit}</div>}
+                    </div>
                     <div className="accreditations">
                         {hospital.accreditations || "NABH Accredited"}
                     </div>
@@ -72,7 +98,7 @@ export default async function HospitalDetailPage({ params }: { params: Promise<{
                             <section className="info-block faqs">
                                 <h2>Frequently Asked Questions</h2>
                                 <div className="faq-list">
-                                    {faqs.map((faq: any, index: number) => (
+                                    {faqs.map((faq: { question: string; answer: string }, index: number) => (
                                         <div key={index} className="faq-item">
                                             <h3>{faq.question}</h3>
                                             <p>{faq.answer}</p>

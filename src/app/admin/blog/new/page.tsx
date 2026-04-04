@@ -1,13 +1,11 @@
-"use client";
-
 import React from 'react';
 import BlogForm from "@/components/admin/BlogForm";
+import { prisma } from "@/lib/prisma";
 
-export default function NewBlogPostPage() {
-  const categories = [
-    { id: '1', name: 'Wellness', slug: 'wellness' },
-    { id: '2', name: 'Health Awareness', slug: 'health-awareness' },
-  ];
+export default async function NewBlogPostPage() {
+  const categories = await prisma.blogCategory.findMany({
+    orderBy: { name: 'asc' }
+  });
 
   return (
     <div className="admin-page">
@@ -18,11 +16,6 @@ export default function NewBlogPostPage() {
 
       <BlogForm categories={categories} />
 
-      <style jsx>{`
-        .page-header {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </div>
   );
 }

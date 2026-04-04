@@ -1,13 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import React from 'react';
+import { prisma } from "@/lib/prisma";
+import DeleteButton from "@/components/admin/DeleteButton";
 
-export default function AdminCategoriesPage() {
-    const categories = [
-        { id: '1', name: 'Wellness', slug: 'wellness', _count: { posts: 10 } },
-        { id: '2', name: 'Health Awareness', slug: 'health-awareness', _count: { posts: 5 } },
-    ];
+export default async function AdminCategoriesPage() {
+    const categories = await prisma.blogCategory.findMany({
+        include: { _count: { select: { posts: true } } },
+        orderBy: { name: 'asc' }
+    });
 
     return (
         <div className="admin-categories">
@@ -39,6 +39,7 @@ export default function AdminCategoriesPage() {
                                 <td>{c._count.posts}</td>
                                 <td className="actions">
                                     <Link href={`/admin/categories/${c.id}/edit`} className="edit-link">Edit</Link>
+                                    <DeleteButton id={c.id} endpoint="/api/admin/categories" itemName={c.name} />
                                 </td>
                             </tr>
                         ))}
@@ -46,38 +47,6 @@ export default function AdminCategoriesPage() {
                 </table>
             </div>
 
-            <style jsx>{`
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 2rem;
-        }
-        .data-table-container {
-          background: white;
-          border-radius: 8px;
-          box-shadow: var(--shadow);
-          overflow: hidden;
-        }
-        .data-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .data-table th, .data-table td {
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid var(--border-color);
-          text-align: left;
-        }
-        .data-table th {
-          background: #f8fafc;
-          font-weight: 600;
-          color: #4a5568;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-        }
-        .font-bold { font-weight: 600; color: var(--primary); }
-        .edit-link { color: var(--primary); font-weight: 500; text-decoration: none; }
-      `}</style>
         </div>
     );
 }

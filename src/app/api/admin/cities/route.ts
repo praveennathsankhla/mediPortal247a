@@ -10,8 +10,9 @@ export async function POST(req: Request) {
         const { name, slug } = await req.json();
         const city = await prisma.city.create({ data: { name, slug } });
         return NextResponse.json(city);
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
 

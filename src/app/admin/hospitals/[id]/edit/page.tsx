@@ -1,32 +1,23 @@
-"use client";
-
-import React, { use } from 'react';
+import React from 'react';
 import HospitalForm from "@/components/admin/HospitalForm";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
-export default function EditHospitalPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
-    // Mocked hospital data
-    const hospital = {
-        id: id,
-        name: 'Apollo Hospital Delhi',
-        slug: 'apollo-hospital-delhi',
-        overview: 'One of the leading healthcare providers in India.',
-        specialties: 'General Medicine, Cardiology',
-        facilities: 'ICU, Emergency, Pharmacy',
-        departments: 'OPD, IPD',
-        accreditations: 'NABH',
-        emergencyInfo: '1066',
-        contactInfo: '+91-11-26925858',
-        faqs: '[]',
-        author: 'Admin',
-    };
+export default async function EditHospitalPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
 
-    const cities = [
-        { id: '1', name: 'Delhi', slug: 'delhi' },
-    ];
-    const specialtiesList = [
-        { id: '1', name: 'Cardiology', slug: 'cardiology' },
-    ];
+    const hospital = await prisma.hospital.findUnique({
+        where: { id }
+    });
+
+    if (!hospital) notFound();
+
+    const cities = await prisma.city.findMany({
+        orderBy: { name: 'asc' }
+    });
+    const specialtiesList = await prisma.specialty.findMany({
+        orderBy: { name: 'asc' }
+    });
 
     return (
         <div className="admin-page">
@@ -37,11 +28,6 @@ export default function EditHospitalPage({ params }: { params: Promise<{ id: str
 
             <HospitalForm initialData={hospital} cities={cities} specialties={specialtiesList} />
 
-            <style jsx>{`
-        .page-header {
-          margin-bottom: 2rem;
-        }
-      `}</style>
         </div>
     );
 }

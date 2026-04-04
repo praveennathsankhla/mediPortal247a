@@ -1,18 +1,38 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import Image from "next/image";
 
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
+  const { category } = await params;
+  const cat = await prisma.blogCategory.findUnique({
+    where: { slug: category },
+    select: { name: true }
+  });
+
+  if (!cat) return { title: 'Category Not Found' };
+
+  return {
+    title: `${cat.name} Articles | mediportal247 Medical Blog`,
+    description: `Explore the latest medical articles and health tips in the ${cat.name} category. Verified health insights for a better life.`,
+  };
+}
 
 export async function generateStaticParams() {
-  const categories = await prisma.blogCategory.findMany();
-  return categories.map((cat: any) => ({
+  const categories = await prisma.blogCategory.findMany({
+    select: { slug: true }
+  });
+  return categories.map((cat) => ({
     category: cat.slug,
   }));
 }
 
 export default async function BlogCategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
+
+  // First check if it's a valid category
   const cat = await prisma.blogCategory.findUnique({
     where: { slug: category },
     include: {
@@ -23,6 +43,16 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ c
   });
 
   if (!cat) {
+    // Fallback: Check if it's a post slug and redirect
+    const post = await prisma.blogPost.findUnique({
+      where: { slug: category },
+      select: { slug: true }
+    });
+
+    if (post) {
+      redirect(`/blog/post/${post.slug}`);
+    }
+
     notFound();
   }
 
@@ -41,8 +71,15 @@ export default async function BlogCategoryPage({ params }: { params: Promise<{ c
 
         <div className="blog-grid">
           {cat.posts.length > 0 ? (
-            cat.posts.map((post: any) => (
+            cat.posts.map((post) => (
               <article key={post.id} className="blog-card">
+                <div className="blog-card-image">
+                  {post.imageUrl ? (
+                    <Image src={post.imageUrl} alt={post.title} width={400} height={200} />
+                  ) : (
+                    <div className="image-placeholder">Awareness</div>
+                  )}
+                </div>
                 <div className="blog-content">
                   <div className="meta">
                     <span>{new Date(post.publishDate).toLocaleDateString()}</span>

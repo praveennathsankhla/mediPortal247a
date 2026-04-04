@@ -4,8 +4,23 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface BlogFormProps {
-    initialData?: any;
-    categories: any[];
+    initialData?: {
+        id: string;
+        title: string;
+        slug: string;
+        content: string;
+        faqs?: string | null;
+        references?: string | null;
+        author: string;
+        imageUrl?: string | null;
+        imageCredit?: string | null;
+        categoryId?: string | null;
+        publishDate: Date | string;
+        lastUpdated: Date | string;
+        metaTitle?: string | null;
+        metaDescription?: string | null;
+    };
+    categories: { id: string; name: string }[];
 }
 
 export default function BlogForm({ initialData, categories }: BlogFormProps) {
@@ -32,10 +47,39 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
 
             router.push("/admin/blog");
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred");
+            }
         } finally {
             setIsPending(false);
+        }
+    };
+
+    const generateSEO = () => {
+        const title = (document.getElementsByName("title")[0] as HTMLInputElement)?.value;
+        const content = (document.getElementsByName("content")[0] as HTMLTextAreaElement)?.value;
+
+        if (!title) return;
+
+        // Auto-slug
+        const slugInput = document.getElementsByName("slug")[0] as HTMLInputElement;
+        if (slugInput && !slugInput.value) {
+            slugInput.value = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        // Auto-meta title
+        const metaTitleInput = document.getElementsByName("metaTitle")[0] as HTMLInputElement;
+        if (metaTitleInput && !metaTitleInput.value) {
+            metaTitleInput.value = `${title} | mediportal247`;
+        }
+
+        // Auto-meta description
+        const metaDescInput = document.getElementsByName("metaDescription")[0] as HTMLTextAreaElement;
+        if (metaDescInput && !metaDescInput.value && content) {
+            metaDescInput.value = content.substring(0, 155).replace(/\s+/g, ' ').trim() + "...";
         }
     };
 
@@ -43,7 +87,10 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
         <form onSubmit={handleSubmit} className="blog-form">
             <div className="form-sections">
                 <section className="form-section">
-                    <h3>Article Details</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3>Article Details</h3>
+                        <button type="button" onClick={generateSEO} className="btn-magic">✨ Magic SEO</button>
+                    </div>
                     <div className="form-group">
                         <label>Title *</label>
                         <input name="title" defaultValue={initialData?.title} required placeholder="e.g. 10 Tips for a Healthy Heart" />
@@ -55,7 +102,7 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
                     <div className="grid-2">
                         <div className="form-group">
                             <label>Category</label>
-                            <select name="categoryId" defaultValue={initialData?.categoryId}>
+                            <select name="categoryId" defaultValue={initialData?.categoryId ?? undefined}>
                                 <option value="">Uncategorized</option>
                                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                             </select>
@@ -67,7 +114,11 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
                     </div>
                     <div className="form-group">
                         <label>Featured Image URL</label>
-                        <input name="imageUrl" defaultValue={initialData?.imageUrl} placeholder="https://example.com/blog-image.jpg" />
+                        <input name="imageUrl" defaultValue={initialData?.imageUrl ?? ""} placeholder="https://example.com/blog-image.jpg" />
+                    </div>
+                    <div className="form-group">
+                        <label>Image Credit / Source</label>
+                        <input name="imageCredit" defaultValue={initialData?.imageCredit ?? ""} placeholder="e.g. Source: Pexels" />
                     </div>
                 </section>
 
@@ -79,11 +130,11 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
                     </div>
                     <div className="form-group">
                         <label>FAQs (JSON string)</label>
-                        <textarea name="faqs" defaultValue={initialData?.faqs} rows={4} placeholder='[{"q": "...", "a": "..."}]' />
+                        <textarea name="faqs" defaultValue={initialData?.faqs ?? ""} rows={4} placeholder='[{"q": "...", "a": "..."}]' />
                     </div>
                     <div className="form-group">
                         <label>References / Citations</label>
-                        <textarea name="references" defaultValue={initialData?.references} rows={3} placeholder="Medical journals, official health sites, etc." />
+                        <textarea name="references" defaultValue={initialData?.references ?? ""} rows={3} placeholder="Medical journals, official health sites, etc." />
                     </div>
                 </section>
 
@@ -101,11 +152,11 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
                     </div>
                     <div className="form-group">
                         <label>Meta Title</label>
-                        <input name="metaTitle" defaultValue={initialData?.metaTitle} placeholder="SEO Title" />
+                        <input name="metaTitle" defaultValue={initialData?.metaTitle ?? ""} placeholder="SEO Title" />
                     </div>
                     <div className="form-group">
                         <label>Meta Description</label>
-                        <textarea name="metaDescription" defaultValue={initialData?.metaDescription} rows={2} placeholder="SEO Description" />
+                        <textarea name="metaDescription" defaultValue={initialData?.metaDescription ?? ""} rows={2} placeholder="SEO Description" />
                     </div>
                 </section>
             </div>
@@ -175,6 +226,19 @@ export default function BlogForm({ initialData, categories }: BlogFormProps) {
           padding: 1rem;
           border-radius: 4px;
           margin-top: 1rem;
+        }
+        .btn-magic {
+          background: #fdf2f8;
+          color: #db2777;
+          border: 1px solid #fbcfe8;
+          padding: 0.4rem 0.8rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .btn-magic:hover {
+          background: #fce7f3;
         }
       `}</style>
         </form>
