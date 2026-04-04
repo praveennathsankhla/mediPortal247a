@@ -4,6 +4,14 @@ import Image from "next/image";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  const posts = await prisma.blogPost.findMany({
+    select: { slug: true }
+  });
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

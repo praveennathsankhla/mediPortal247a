@@ -4,6 +4,15 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
 
+export async function generateStaticParams() {
+  const cities = await prisma.city.findMany({
+    select: { slug: true }
+  });
+  return cities.map((city) => ({
+    slug: city.slug,
+  }));
+}
+
 export const revalidate = 3600;
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string }> }) {

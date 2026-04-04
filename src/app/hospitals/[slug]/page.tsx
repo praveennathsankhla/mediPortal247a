@@ -3,6 +3,14 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+    const hospitals = await prisma.hospital.findMany({
+        select: { slug: true }
+    });
+    return hospitals.map((h) => ({
+        slug: h.slug,
+    }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

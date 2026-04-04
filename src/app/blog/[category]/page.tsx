@@ -5,6 +5,15 @@ import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 
 
+export async function generateStaticParams() {
+  const categories = await prisma.blogCategory.findMany({
+    select: { slug: true }
+  });
+  return categories.map((cat) => ({
+    category: cat.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
   const cat = await prisma.blogCategory.findUnique({
