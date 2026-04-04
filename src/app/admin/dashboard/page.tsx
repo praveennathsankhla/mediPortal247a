@@ -5,6 +5,7 @@ export default async function DashboardPage() {
   const hospitalCount = await prisma.hospital.count();
   const blogCount = await prisma.blogPost.count();
   const cityCount = await prisma.city.count();
+  const specialtyCount = await prisma.specialty.count();
 
   const recentHospitals = await prisma.hospital.findMany({
     take: 5,
@@ -37,6 +38,10 @@ export default async function DashboardPage() {
         <div className="stat-card">
           <div className="stat-value">{cityCount}</div>
           <div className="stat-label">Cities Covered</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value">{specialtyCount}</div>
+          <div className="stat-label">Specialties</div>
         </div>
       </div>
 
