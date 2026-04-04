@@ -65,7 +65,13 @@ export default async function HospitalDetailPage({ params }: { params: Promise<{
                     </div>
                     <h1>{hospital.name}</h1>
                     <div className="hospital-image">
-                        <Image src={hospital.imageUrl} alt={hospital.name} width={800} height={450} priority />
+                        <Image
+                            src={hospital.imageUrl || "https://picsum.photos/seed/hospital/800/450"}
+                            alt={hospital.name}
+                            width={800}
+                            height={450}
+                            priority
+                        />
                         {hospital.imageCredit && <div className="image-credit">{hospital.imageCredit}</div>}
                     </div>
                     <div className="accreditations">

@@ -42,7 +42,7 @@ export default async function HomePage() {
                 <div key={h.id} className="hospital-card">
                   <div className="card-image">
                     {h.imageUrl ? (
-                      <Image src={h.imageUrl} alt={h.name} width={400} height={250} className="object-cover" />
+                      <Image src={h.imageUrl || "https://picsum.photos/seed/hosp/400/250"} alt={h.name} width={400} height={250} className="object-cover" />
                     ) : (
                       <div className="image-placeholder">Medical Care</div>
                     )}
@@ -89,7 +89,7 @@ export default async function HomePage() {
               latestPosts.map(p => (
                 <article key={p.id} className="blog-card">
                   <div className="blog-card-image">
-                    {p.imageUrl && <Image src={p.imageUrl} alt={p.title} width={400} height={250} className="object-cover" />}
+                    {p.imageUrl && <Image src={p.imageUrl || "https://picsum.photos/seed/post/400/250"} alt={p.title} width={400} height={250} className="object-cover" />}
                   </div>
                   <div className="blog-card-body">
                     <span className="blog-category">{p.category?.name || 'Awareness'}</span>

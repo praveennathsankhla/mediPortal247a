@@ -77,7 +77,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {post.imageUrl && (
           <div className="post-featured-image">
-            <Image src={post.imageUrl} alt={post.title} width={850} height={480} className="w-full h-auto object-cover rounded-xl" priority />
+            <Image
+              src={post.imageUrl || "https://picsum.photos/seed/blog/850/480"}
+              alt={post.title}
+              width={850}
+              height={480}
+              className="w-full h-auto object-cover rounded-xl"
+              priority
+            />
             {post.imageCredit && <div className="image-credit">{post.imageCredit}</div>}
           </div>
         )}

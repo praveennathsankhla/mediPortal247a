@@ -83,7 +83,7 @@ export default async function HospitalsPage({
                                 hospitals.map((h) => (
                                     <div key={h.id} className="hospital-item">
                                         <div className="hospital-item-image">
-                                            {h.imageUrl ? <Image src={h.imageUrl} alt={h.name} width={200} height={150} className="object-cover" /> : <div className="placeholder">MediCare</div>}
+                                            {h.imageUrl ? <Image src={h.imageUrl || "https://picsum.photos/seed/hosp/200/150"} alt={h.name} width={200} height={150} className="object-cover" /> : <div className="placeholder">MediCare</div>}
                                         </div>
                                         <div className="hospital-item-content">
                                             <div className="item-tags">
