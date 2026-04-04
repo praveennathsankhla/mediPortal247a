@@ -60,11 +60,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         });
 
         return NextResponse.json(hospital);
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Hospital update error:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        const errorStack = error instanceof Error ? error.stack : undefined;
         return NextResponse.json({
-            error: error.message || "Unknown error",
-            stack: error.stack
+            error: errorMessage,
+            stack: errorStack
         }, { status: 500 });
     }
 }

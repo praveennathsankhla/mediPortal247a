@@ -11,17 +11,18 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     try {
         const data = await req.json();
-        let {
-            title, slug, content, faqs = "[]", references = "", author = session.user?.email || "Admin",
+        const {
+            title, content, faqs = "[]", references = "", author = session.user?.email || "Admin",
             imageUrl = "", imageCredit = "", categoryId, metaTitle = "", metaDescription = "",
             publishDate, lastUpdated
         } = data;
+        let { slug } = data;
 
         // Sanitize slug
         if (slug) {
-            slug = slug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            slug = (slug as string).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         } else if (title) {
-            slug = title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            slug = (title as string).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         }
 
         const publishDateObj = publishDate ? new Date(publishDate) : new Date();
