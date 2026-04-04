@@ -1,7 +1,4 @@
-import Link from "next/link";
-import React from 'react';
-import { prisma } from "@/lib/prisma";
-import DeleteButton from "@/components/admin/DeleteButton";
+export const dynamic = "force-dynamic";
 
 export default async function AdminCategoriesPage() {
     const categories = await prisma.blogCategory.findMany({

@@ -1,6 +1,4 @@
-import { prisma } from "@/lib/prisma";
-import Link from "next/link";
-import Image from "next/image";
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   // Fetch featured hospitals (take first 3)

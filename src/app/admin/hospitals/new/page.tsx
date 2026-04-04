@@ -1,6 +1,4 @@
-import React from 'react';
-import HospitalForm from "@/components/admin/HospitalForm";
-import { prisma } from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export default async function NewHospitalPage() {
   const cities = await prisma.city.findMany({
