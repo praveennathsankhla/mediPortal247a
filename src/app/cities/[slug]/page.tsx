@@ -4,12 +4,7 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { notFound } from "next/navigation";
 
 
-export async function generateStaticParams() {
-  const cities = await prisma.city.findMany();
-  return cities.map((city) => ({
-    slug: city.slug,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

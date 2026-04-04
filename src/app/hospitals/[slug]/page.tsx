@@ -24,14 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
-export async function generateStaticParams() {
-    const hospitals = await prisma.hospital.findMany({
-        select: { slug: true }
-    });
-    return hospitals.map((h) => ({
-        slug: h.slug,
-    }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function HospitalDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
