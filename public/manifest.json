@@ -1,0 +1,21 @@
+{
+    "name": "mediPortal247 India",
+    "short_name": "mediPortal247",
+    "description": "Your Trusted Healthcare Information Source",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "icons": [
+        {
+            "src": "/mediportal_icon_192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/mediportal_icon_512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

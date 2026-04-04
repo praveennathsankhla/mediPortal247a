@@ -10,6 +10,15 @@ export const metadata: Metadata = {
   title: "mediportal247 India - Your Trusted Healthcare Information Source",
   description: "Find verified information on top hospitals in India, medical awareness blogs, and healthcare facilities at mediportal247.online. SEO-optimized and trustworthy medical portal.",
   keywords: "India hospitals, medical blog, healthcare information, top hospitals India, NABH hospitals, mediportal247",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "mediportal247",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
