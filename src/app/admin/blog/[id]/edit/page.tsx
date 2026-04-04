@@ -1,5 +1,10 @@
 export const dynamic = "force-dynamic";
 
+import React from 'react';
+import BlogForm from "@/components/admin/BlogForm";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+
 export default async function EditBlogPostPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
 

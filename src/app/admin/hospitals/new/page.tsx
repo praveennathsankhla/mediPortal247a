@@ -1,5 +1,9 @@
 export const dynamic = "force-dynamic";
 
+import React from 'react';
+import HospitalForm from "@/components/admin/HospitalForm";
+import { prisma } from "@/lib/prisma";
+
 export default async function NewHospitalPage() {
   const cities = await prisma.city.findMany({
     orderBy: { name: 'asc' }

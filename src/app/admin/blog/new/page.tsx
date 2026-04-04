@@ -1,5 +1,9 @@
 export const dynamic = "force-dynamic";
 
+import React from 'react';
+import BlogForm from "@/components/admin/BlogForm";
+import { prisma } from "@/lib/prisma";
+
 export default async function NewBlogPostPage() {
   const categories = await prisma.blogCategory.findMany({
     orderBy: { name: 'asc' }

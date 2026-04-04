@@ -1,5 +1,8 @@
 export const dynamic = "force-dynamic";
 
+import React from 'react';
+import { prisma } from "@/lib/prisma";
+
 export default async function DashboardPage() {
   const hospitalCount = await prisma.hospital.count();
   const blogCount = await prisma.blogPost.count();

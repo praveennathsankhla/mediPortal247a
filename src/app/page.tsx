@@ -1,5 +1,9 @@
 export const dynamic = "force-dynamic";
 
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import Image from "next/image";
+
 export default async function HomePage() {
   // Fetch featured hospitals (take first 3)
   const featuredHospitals = await prisma.hospital.findMany({

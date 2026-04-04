@@ -1,5 +1,10 @@
 export const dynamic = "force-dynamic";
 
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import Image from "next/image";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+
 export default async function BlogIndexPage() {
     const categories = await prisma.blogCategory.findMany({
         include: {

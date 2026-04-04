@@ -1,5 +1,10 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
+import React from 'react';
+import { prisma } from "@/lib/prisma";
+import DeleteButton from "@/components/admin/DeleteButton";
+
 export default async function AdminSpecialtiesPage() {
     const specialties = await prisma.specialty.findMany({
         include: { _count: { select: { hospitals: true } } },
