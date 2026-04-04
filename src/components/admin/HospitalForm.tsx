@@ -40,7 +40,13 @@ export default function HospitalForm({ initialData, cities, specialties }: Hospi
         setError("");
 
         const formData = new FormData(e.currentTarget);
-        const data = Object.fromEntries(formData.entries());
+        const data: any = Object.fromEntries(formData.entries());
+
+        // Sanitize Google Maps URL if it's an iframe
+        if (data.mapUrl && data.mapUrl.includes('<iframe')) {
+            const match = data.mapUrl.match(/src="([^"]+)"/);
+            if (match) data.mapUrl = match[1];
+        }
 
         try {
             const res = await fetch(initialData ? `/api/admin/hospitals/${initialData.id}` : "/api/admin/hospitals", {

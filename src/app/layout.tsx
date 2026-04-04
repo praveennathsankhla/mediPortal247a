@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   description: "Find verified information on top hospitals in India, medical awareness blogs, and healthcare facilities at mediportal247.online. SEO-optimized and trustworthy medical portal.",
   keywords: "India hospitals, medical blog, healthcare information, top hospitals India, NABH hospitals, mediportal247",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/mediportal_icon_192.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

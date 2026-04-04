@@ -50,6 +50,15 @@ export default async function HospitalDetailPage({ params }: { params: Promise<{
 
     const faqs = hospital.faqs ? JSON.parse(hospital.faqs) : [];
 
+    const getMapUrl = (url: string | null) => {
+        if (!url) return "";
+        if (url.includes("<iframe")) {
+            const match = url.match(/src="([^"]+)"/);
+            return match ? match[1] : url;
+        }
+        return url;
+    };
+
     return (
         <div className="hospital-detail-page">
             <Breadcrumbs items={[
@@ -129,7 +138,7 @@ export default async function HospitalDetailPage({ params }: { params: Promise<{
                             </div>
                             {hospital.mapUrl && (
                                 <div className="map-placeholder">
-                                    <a href={hospital.mapUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline w-full">View on Google Maps</a>
+                                    <a href={getMapUrl(hospital.mapUrl)} target="_blank" rel="noopener noreferrer" className="btn btn-outline w-full">View on Google Maps</a>
                                 </div>
                             )}
                         </div>
