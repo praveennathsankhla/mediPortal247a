@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/mediportal_icon_192.png",
   },
+  verification: {
+    google: "OQ4KlM2cdYXIq7d7bhsdUVVy8GvEPJNWR6nW7hP0xvg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
